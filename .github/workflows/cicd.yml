@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/flask-k8s-app
+  IMAGE: jainhj/flask-k8s-app
 
 jobs:
   test:
