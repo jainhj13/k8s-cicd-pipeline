@@ -35,7 +35,7 @@ jobs:
 
       - name: Login to Docker Hub
         run: |
-	echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "jainhj" --password-stdin
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login --username jainhj --password-stdin
 
       - name: Build Docker image
         run: docker build -t $IMAGE:${{ github.sha }} .
@@ -54,7 +54,8 @@ jobs:
         uses: azure/setup-kubectl@v3
 
       - name: Set kubeconfig
-        run: echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig.yaml
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig.yaml
 
       - name: Deploy to Kubernetes
         run: |
