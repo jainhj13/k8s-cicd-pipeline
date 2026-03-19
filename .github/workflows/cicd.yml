@@ -44,20 +44,20 @@ jobs:
         run: docker push $IMAGE:${{ github.sha }}
 
   deploy:
-    needs: build-push
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  needs: build-push
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Setup kubectl
-        uses: azure/setup-kubectl@v3
+    - name: Setup kubectl
+      uses: azure/setup-kubectl@v3
 
-      - name: Set kubeconfig
-        run: |
-          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig.yaml
+    - name: Set kubeconfig
+      run: |
+        echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig.yaml
 
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl set image deployment/flask-app flask=$IMAGE:${{ github.sha }} --kubeconfig=kubeconfig.yaml
-          kubectl rollout status deployment/flask-app --kubeconfig=kubeconfig.yaml
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl set image deployment/flask-app flask=$IMAGE:${{ github.sha }} --kubeconfig=kubeconfig.yaml
+        kubectl rollout status deployment/flask-app --kubeconfig=kubeconfig.yaml
